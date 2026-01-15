@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { HiChartBar, HiClock } from "react-icons/hi";
+import { FaCrosshairs } from "react-icons/fa6";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
 
   const menuItems = [
     { path: "/", icon: HiChartBar, label: "Dashboard" },
+    { path: "/radar", icon: FaCrosshairs, label: "Radar" },
     { path: "/history", icon: HiClock, label: "History" },
   ];
 

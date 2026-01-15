@@ -14,14 +14,12 @@ import {
 import { 
   FaLightbulb, FaGear, FaSun, FaCircleHalfStroke, FaBatteryThreeQuarters,
   FaWifi, FaTriangleExclamation, FaBolt, FaPlug, FaTerminal,
-  FaPowerOff, FaCircleCheck, FaPlug as FaPlugAlt, FaFire, FaBolt as FaBoltAlt,
-  FaCrosshairs // <--- ADD THIS (or FaSatelliteDish)
+  FaPowerOff, FaCircleCheck, FaPlug as FaPlugAlt, FaFire, FaBolt as FaBoltAlt
 } from "react-icons/fa6";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardHeader, CardTitle } from "../components/Card";
 import { useMQTT, TOPICS } from "../hooks/useMQTT";
-import RadarWidget from "../components/RadarWidget";
 
 ChartJS.register(
   CategoryScale,
@@ -792,18 +790,6 @@ const Dashboard = () => {
                   {lightIntensity.toFixed(0)}%
                 </div>
                 <div className="text-sm opacity-70">Current Intensity</div>
-              </div>
-            </Card>
-
-            {/* Radar Widget */}
-            <Card className="col-span-1 sm:col-span-2">
-              <CardHeader>
-                <CardTitle icon={FaWifi} iconColor="text-primary-green">
-                  Radar Scanner
-                </CardTitle>
-              </CardHeader>
-              <div className="relative w-full" style={{ height: '600px' }}>
-                <RadarWidget />
               </div>
             </Card>
 
