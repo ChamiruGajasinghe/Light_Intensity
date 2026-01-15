@@ -1,10 +1,10 @@
-# 🌟 Light Intensity & Power Backup System
+﻿# ðŸŒŸ Light Intensity & Power Backup System
 
 Complete IoT monitoring and control system for intelligent lighting and emergency power management using ESP32, INA3221 sensors, and real-time MQTT communication.
 
 ---
 
-## 📋 Project Overview
+## ðŸ“‹ Project Overview
 
 This system provides:
 - **Real-time Light Intensity Monitoring** (3-bit binary input, 0-100%)
@@ -17,14 +17,14 @@ This system provides:
 
 ---
 
-## 🏗️ System Architecture
+## ðŸ—ï¸ System Architecture
 
 ```
-┌──────────────────┐          ┌──────────────────┐          ┌─────────────────┐
-│  Web Dashboard   │────────▶│  MQTT Broker     │────────▶│     ESP32       │
-│  (Any Browser)   │          │ (HiveMQ Cloud)   │          │  + INA3221      │
-│                  │◀────────│                  │◀────────│  + Sensors      │
-└──────────────────┘          └──────────────────┘          └─────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Web Dashboard   â”‚â”€â”€â”€â”€â”€â”€â”€â”€â–¶â”‚  MQTT Broker     â”‚â”€â”€â”€â”€â”€â”€â”€â”€â–¶â”‚     ESP32       â”‚
+â”‚  (Any Browser)   â”‚          â”‚ (HiveMQ Cloud)   â”‚          â”‚  + INA3221      â”‚
+â”‚                  â”‚â—€â”€â”€â”€â”€â”€â”€â”€â”€â”‚                  â”‚â—€â”€â”€â”€â”€â”€â”€â”€â”€â”‚  + Sensors      â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
      Internet                     Internet                   Local Network
 ```
 
@@ -39,7 +39,7 @@ This system provides:
 
 ---
 
-## 🔧 Hardware Setup
+## ðŸ”§ Hardware Setup
 
 ### ESP32 Pin Configuration
 
@@ -63,18 +63,18 @@ This system provides:
 ### Light Intensity Input
 
 The system reads 3 binary inputs (B0, B1, B2) to determine light intensity:
-- **000** (0) → 0%
-- **001** (1) → 14.3%
-- **010** (2) → 28.6%
-- **011** (3) → 42.9%
-- **100** (4) → 57.1%
-- **101** (5) → 71.4%
-- **110** (6) → 85.7%
-- **111** (7) → 100%
+- **000** (0) â†’ 0%
+- **001** (1) â†’ 14.3%
+- **010** (2) â†’ 28.6%
+- **011** (3) â†’ 42.9%
+- **100** (4) â†’ 57.1%
+- **101** (5) â†’ 71.4%
+- **110** (6) â†’ 85.7%
+- **111** (7) â†’ 100%
 
 ---
 
-## ⚡ Emergency Power Cut Sequence
+## âš¡ Emergency Power Cut Sequence
 
 When main power voltage drops below 9.0V:
 
@@ -92,8 +92,8 @@ When main power voltage drops below 9.0V:
    - GPIO13 turns OFF
    - GPIO14 turns OFF
    - **Check light intensity:**
-     - If intensity < 40% → GPIO27 (Emergency Light) turns ON
-     - If intensity ≥ 40% → Emergency light stays OFF (sufficient ambient light)
+     - If intensity < 40% â†’ GPIO27 (Emergency Light) turns ON
+     - If intensity â‰¥ 40% â†’ Emergency light stays OFF (sufficient ambient light)
 
 4. **Power restored** - Normal operation resumes
    - All emergency controls turn OFF
@@ -101,7 +101,7 @@ When main power voltage drops below 9.0V:
 
 ---
 
-## 🌐 Network Configuration
+## ðŸŒ Network Configuration
 
 ### WiFi Settings
 - **SSID**: Chamix
@@ -116,72 +116,72 @@ When main power voltage drops below 9.0V:
 
 | Topic | Direction | Purpose |
 |-------|-----------|---------|
-| `esp32/led/control` | Web → ESP32 | Built-in LED control |
-| `esp32/led/status` | ESP32 → Web | Built-in LED status |
-| `esp32/led2/control` | Web → ESP32 | System control (GPIO13) |
-| `esp32/led2/status` | ESP32 → Web | System status |
-| `esp32/led4/control` | Web → ESP32 | Intensity control (GPIO14) |
-| `esp32/led4/status` | ESP32 → Web | Intensity status |
-| `esp32/emergency/control` | Web → ESP32 | Manual emergency light control |
-| `esp32/emergency/status` | ESP32 → Web | Emergency light status |
-| `esp32/sensor/voltage` | ESP32 → Web | Battery voltage (Channel 1) |
-| `esp32/sensor/current` | ESP32 → Web | Battery current (Channel 1) |
-| `esp32/sensor2/voltage` | ESP32 → Web | Main power voltage (Channel 2) |
-| `esp32/sensor2/current` | ESP32 → Web | Main power current (Channel 2) |
-| `esp32/light/intensity` | ESP32 → Web | Light intensity percentage |
-| `esp32/powercut/status` | ESP32 → Web | Power cut alerts |
-| `esp32/command/status` | ESP32 → Web | System command logs |
-| `esp32/history/powercut` | ESP32 → Web | Power cut history data |
+| `esp32/led/control` | Web â†’ ESP32 | Built-in LED control |
+| `esp32/led/status` | ESP32 â†’ Web | Built-in LED status |
+| `esp32/led2/control` | Web â†’ ESP32 | System control (GPIO13) |
+| `esp32/led2/status` | ESP32 â†’ Web | System status |
+| `esp32/led4/control` | Web â†’ ESP32 | Intensity control (GPIO14) |
+| `esp32/led4/status` | ESP32 â†’ Web | Intensity status |
+| `esp32/emergency/control` | Web â†’ ESP32 | Manual emergency light control |
+| `esp32/emergency/status` | ESP32 â†’ Web | Emergency light status |
+| `esp32/sensor/voltage` | ESP32 â†’ Web | Battery voltage (Channel 1) |
+| `esp32/sensor/current` | ESP32 â†’ Web | Battery current (Channel 1) |
+| `esp32/sensor2/voltage` | ESP32 â†’ Web | Main power voltage (Channel 2) |
+| `esp32/sensor2/current` | ESP32 â†’ Web | Main power current (Channel 2) |
+| `esp32/light/intensity` | ESP32 â†’ Web | Light intensity percentage |
+| `esp32/powercut/status` | ESP32 â†’ Web | Power cut alerts |
+| `esp32/command/status` | ESP32 â†’ Web | System command logs |
+| `esp32/history/powercut` | ESP32 â†’ Web | Power cut history data |
 
 ---
 
-## 📁 Project Structure
+## ðŸ“ Project Structure
 
 ```
 Modular_ESP32_Controller/
-├── README.md                          # This file
-├── PROJECT_DOCUMENTATION.md           # Detailed documentation
-├── HOW_TO_RUN.md                     # Complete setup guide
-├── MQTT Connection.code-workspace    # VS Code workspace
-├── platformio.ini                    # PlatformIO configuration
-├── web/                              # React web dashboard
-│   ├── README.md                     # Comprehensive React app documentation
-│   ├── package.json                  # React dependencies (Vite, React Router, Chart.js, MQTT.js)
-│   ├── vite.config.js                # Vite configuration
-│   ├── tailwind.config.js            # Tailwind CSS configuration
-│   ├── index.html                    # React app entry point
-│   ├── src/                          # React source code
-│   │   ├── App.jsx                   # Main application component
-│   │   ├── main.jsx                  # React entry point
-│   │   ├── index.css                 # Global styles
-│   │   ├── components/               # Reusable React components
-│   │   │   ├── Header.jsx            # Navigation header
-│   │   │   ├── Sidebar.jsx           # Responsive sidebar
-│   │   │   └── Card.jsx              # Dashboard cards
-│   │   ├── pages/                    # Page components
-│   │   │   ├── Dashboard.jsx         # Real-time monitoring dashboard (1030 lines)
-│   │   │   └── History.jsx           # Power cut history analytics (450 lines)
-│   │   └── hooks/                    # Custom React hooks
-│   │       └── useMQTT.js            # MQTT connection management
-│   └── public/                       # Static assets
-├── src/                              # ESP32 firmware (modular C++)
-│   ├── main.cpp                      # Main application entry point
-│   ├── config.cpp                    # Configuration management
-│   ├── globals.cpp                   # Global variables
-│   ├── hardware.cpp                  # Hardware control (GPIO, INA3221, sensors)
-│   └── network.cpp                   # WiFi & MQTT networking
-├── include/                          # Header files
-│   ├── config.h                      # System configuration constants
-│   ├── globals.h                     # Global variable declarations
-│   ├── hardware.h                    # Hardware function declarations
-│   └── network.h                     # Network function declarations
-├── lib/                              # External libraries
-└── test/                             # Test files
+â”œâ”€â”€ README.md                          # This file
+â”œâ”€â”€ PROJECT_DOCUMENTATION.md           # Detailed documentation
+â”œâ”€â”€ HOW_TO_RUN.md                     # Complete setup guide
+â”œâ”€â”€ MQTT Connection.code-workspace    # VS Code workspace
+â”œâ”€â”€ platformio.ini                    # PlatformIO configuration
+â”œâ”€â”€ web/                              # React web dashboard
+â”‚   â”œâ”€â”€ README.md                     # Comprehensive React app documentation
+â”‚   â”œâ”€â”€ package.json                  # React dependencies (Vite, React Router, Chart.js, MQTT.js)
+â”‚   â”œâ”€â”€ vite.config.js                # Vite configuration
+â”‚   â”œâ”€â”€ tailwind.config.js            # Tailwind CSS configuration
+â”‚   â”œâ”€â”€ index.html                    # React app entry point
+â”‚   â”œâ”€â”€ src/                          # React source code
+â”‚   â”‚   â”œâ”€â”€ App.jsx                   # Main application component
+â”‚   â”‚   â”œâ”€â”€ main.jsx                  # React entry point
+â”‚   â”‚   â”œâ”€â”€ index.css                 # Global styles
+â”‚   â”‚   â”œâ”€â”€ components/               # Reusable React components
+â”‚   â”‚   â”‚   â”œâ”€â”€ Header.jsx            # Navigation header
+â”‚   â”‚   â”‚   â”œâ”€â”€ Sidebar.jsx           # Responsive sidebar
+â”‚   â”‚   â”‚   â””â”€â”€ Card.jsx              # Dashboard cards
+â”‚   â”‚   â”œâ”€â”€ pages/                    # Page components
+â”‚   â”‚   â”‚   â”œâ”€â”€ Dashboard.jsx         # Real-time monitoring dashboard (1030 lines)
+â”‚   â”‚   â”‚   â””â”€â”€ History.jsx           # Power cut history analytics (450 lines)
+â”‚   â”‚   â””â”€â”€ hooks/                    # Custom React hooks
+â”‚   â”‚       â””â”€â”€ useMQTT.js            # MQTT connection management
+â”‚   â””â”€â”€ public/                       # Static assets
+â”œâ”€â”€ src/                              # ESP32 firmware (modular C++)
+â”‚   â”œâ”€â”€ main.cpp                      # Main application entry point
+â”‚   â”œâ”€â”€ config.cpp                    # Configuration management
+â”‚   â”œâ”€â”€ globals.cpp                   # Global variables
+â”‚   â”œâ”€â”€ hardware.cpp                  # Hardware control (GPIO, INA3221, sensors)
+â”‚   â””â”€â”€ network.cpp                   # WiFi & MQTT networking
+â”œâ”€â”€ include/                          # Header files
+â”‚   â”œâ”€â”€ config.h                      # System configuration constants
+â”‚   â”œâ”€â”€ globals.h                     # Global variable declarations
+â”‚   â”œâ”€â”€ hardware.h                    # Hardware function declarations
+â”‚   â””â”€â”€ network.h                     # Network function declarations
+â”œâ”€â”€ lib/                              # External libraries
+â””â”€â”€ test/                             # Test files
 ```
 
 ---
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
 ### 1. ESP32 Firmware Setup
 
@@ -207,49 +207,49 @@ Open browser: http://localhost:3001
 
 ---
 
-## 📊 Features
+## ðŸ“Š Features
 
 ### Real-Time Monitoring (React Dashboard with Chart.js)
-- ✅ Light intensity percentage (0-100%)
-- ✅ Dual voltage monitoring with live charts (60-sample history)
-- ✅ Battery voltage and current (Channel 1)
-- ✅ Main power voltage and current (Channel 2)
-- ✅ Power calculations (V × A = W)
-- ✅ Real-time timestamps on chart x-axis
-- ✅ Data persistence across page navigation (LocalStorage)
-- ✅ Smooth animations (300ms transitions)
-- ✅ 2 samples per second update rate
-- ✅ Connection status indicators
+- âœ… Light intensity percentage (0-100%)
+- âœ… Dual voltage monitoring with live charts (60-sample history)
+- âœ… Battery voltage and current (Channel 1)
+- âœ… Main power voltage and current (Channel 2)
+- âœ… Power calculations (V Ã— A = W)
+- âœ… Real-time timestamps on chart x-axis
+- âœ… Data persistence across page navigation (LocalStorage)
+- âœ… Smooth animations (300ms transitions)
+- âœ… 2 samples per second update rate
+- âœ… Connection status indicators
 
 ### Control Features (Interactive Dashboard)
-- ✅ Manual system control (GPIO13)
-- ✅ Manual intensity control (GPIO14)
-- ✅ Manual emergency light control (GPIO27)
-- ✅ Automatic emergency sequence
-- ✅ Toggle switches with real-time feedback
-- ✅ MQTT WebSocket communication
+- âœ… Manual system control (GPIO13)
+- âœ… Manual intensity control (GPIO14)
+- âœ… Manual emergency light control (GPIO27)
+- âœ… Automatic emergency sequence
+- âœ… Toggle switches with real-time feedback
+- âœ… MQTT WebSocket communication
 
 ### Data Logging & Analytics
-- ✅ Power cut history with timestamps
-- ✅ Duration tracking and statistics
-- ✅ Voltage drop measurements
-- ✅ Energy consumption during outages
-- ✅ Browser LocalStorage persistence
-- ✅ Historical charts (voltage drainage, duration timeline, energy consumption)
-- ✅ Export to CSV functionality
+- âœ… Power cut history with timestamps
+- âœ… Duration tracking and statistics
+- âœ… Voltage drop measurements
+- âœ… Energy consumption during outages
+- âœ… Browser LocalStorage persistence
+- âœ… Historical charts (voltage drainage, duration timeline, energy consumption)
+- âœ… Export to CSV functionality
 
 ### Modern User Interface (React + Tailwind CSS)
-- ✅ Responsive design (mobile-friendly)
-- ✅ Component-based architecture
-- ✅ React Router for navigation
-- ✅ Custom React hooks for MQTT
-- ✅ Lazy initialization for performance
-- ✅ Throttled updates to prevent overload
-- ✅ Real-time chart updates without discontinuities
+- âœ… Responsive design (mobile-friendly)
+- âœ… Component-based architecture
+- âœ… React Router for navigation
+- âœ… Custom React hooks for MQTT
+- âœ… Lazy initialization for performance
+- âœ… Throttled updates to prevent overload
+- âœ… Real-time chart updates without discontinuities
 
 ---
 
-## 🔐 Safety Features
+## ðŸ” Safety Features
 
 - **Low Voltage Warning**: Alert when battery < 10V
 - **Automatic Power Cut Detection**: Threshold at 9.0V
@@ -260,7 +260,7 @@ Open browser: http://localhost:3001
 
 ---
 
-## 📖 Documentation
+## ðŸ“– Documentation
 
 - **[HOW_TO_RUN.md](HOW_TO_RUN.md)** - Complete setup and running guide
 - **[Web Application Guide](web/README.md)** - Comprehensive React app documentation (tech stack, features, API reference)
@@ -268,7 +268,7 @@ Open browser: http://localhost:3001
 
 ---
 
-## 🛠️ Technology Stack
+## ðŸ› ï¸ Technology Stack
 
 ### Firmware (ESP32)
 - **PlatformIO** - Development environment
@@ -293,13 +293,13 @@ Open browser: http://localhost:3001
 
 ---
 
-## 📝 License
+## ðŸ“ License
 
 This project is for educational and personal use.
 
 ---
 
-## 👤 Author
+## ðŸ‘¤ Author
 
 **Chami**
 - Project: Light Intensity & Power Backup System
@@ -307,11 +307,9 @@ This project is for educational and personal use.
 
 ---
 
-## 🔗 Resources
+## ðŸ”— Resources
 
 - [ESP32 Documentation](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/)
 - [PlatformIO](https://platformio.org/)
 - [HiveMQ MQTT Broker](https://www.hivemq.com/)
 - [INA3221 Datasheet](https://www.ti.com/product/INA3221)
-#   L i g h t _ I n t e n s i t y  
- 
