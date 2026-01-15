@@ -1,0 +1,226 @@
+/* RadarWidget.css - Sonar Edition */
+
+.radar-widget-container {
+  width: 100%;
+  height: 100%;
+  background-color: #020202; /* Deep black */
+  color: #00ff41;
+  font-family: "Consolas", "Monaco", monospace;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px; /* Slight rounding for widget feel */
+}
+
+/* Main circular background gradient */
+.radar-widget-container .radar-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #001100 0%, #000500 100%);
+  position: relative;
+}
+
+/* The Radar Screen (Canvas) */
+.radar-widget-container canvas {
+  max-width: min(400px, 70%);
+  max-height: min(400px, 70%);
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+  background-color: #000800; /* Matches the JS trail clear color */
+  border: 4px solid #002200; 
+  /* Deep glow for the CRT look */
+  box-shadow: 
+    0 0 0 2px #004400, 
+    0 0 20px rgba(0, 255, 65, 0.1), 
+    inset 0 0 50px rgba(0, 0, 0, 0.9);
+  cursor: crosshair;
+}
+
+/* --- HUD PANELS (Glassmorphism style) --- */
+.radar-widget-container .hud-panel {
+  position: absolute;
+  background: rgba(0, 20, 0, 0.85); /* Slightly more opaque */
+  border: 1px solid #004400;
+  padding: 10px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+  font-size: 11px;
+  z-index: 15;
+}
+
+/* Top Left Status Box */
+.radar-widget-container .hud-top-left { 
+  top: 15px; 
+  left: 15px; 
+  width: 140px; 
+  border-left: 3px solid #00ff41; /* Green accent bar */
+}
+
+/* Right Side: Scan Report List */
+.radar-widget-container .hud-target-list {
+  top: 15px;
+  right: 15px;
+  bottom: 20px; /* Stretch further down */
+  width: 200px; /* Slightly wider for data */
+  display: flex;
+  flex-direction: column;
+  border-right: 3px solid #00ff41; /* Green accent bar */
+}
+
+/* Scrollable Target Area */
+.radar-widget-container .target-scroll-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: 5px;
+  border-top: 1px dashed #004400;
+  padding-right: 5px; /* Space for scrollbar */
+  
+  /* Scrollbar Styling */
+  scrollbar-width: thin;
+  scrollbar-color: #006600 #001100;
+}
+.radar-widget-container .target-scroll-area::-webkit-scrollbar { width: 6px; }
+.radar-widget-container .target-scroll-area::-webkit-scrollbar-track { background: #001100; }
+.radar-widget-container .target-scroll-area::-webkit-scrollbar-thumb { background-color: #006600; border-radius: 3px; }
+
+/* Target Item Rows */
+.radar-widget-container .target-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 6px 4px;
+  border-bottom: 1px solid #002200;
+  color: #00cc33;
+  transition: background 0.2s;
+}
+.radar-widget-container .target-item:hover {
+  background: rgba(0, 255, 65, 0.1);
+}
+
+/* Labels & Values */
+.radar-widget-container .label { font-size: 9px; color: #00aa33; font-weight: bold; letter-spacing: 1px; margin-bottom: 3px; }
+.radar-widget-container .value { font-size: 14px; font-weight: bold; color: #00ff41; text-shadow: 0 0 8px rgba(0, 255, 65, 0.6); }
+.radar-widget-container .value.alert { color: #ff3300; text-shadow: 0 0 8px #ff3300; }
+
+/* CRT Scanline Overlay */
+.radar-widget-container .crt-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+    radial-gradient(circle, transparent 60%, rgba(0,0,0,1) 120%);
+  background-size: 100% 4px, 100% 100%; /* Stronger scanlines */
+  z-index: 50; /* Top most layer */
+  opacity: 0.7;
+}
+
+/* --- CONTROLS PANEL (Bottom Left) --- */
+.radar-widget-container .controls-panel {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(0, 20, 0, 0.9);
+  border: 1px solid #004400;
+  border-left: 3px solid #00ff41;
+  padding: 12px;
+  backdrop-filter: blur(4px);
+  z-index: 20;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column; /* Stack switches vertically */
+  gap: 8px; /* Space between switches */
+  min-width: 140px;
+}
+
+.radar-widget-container .switch-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #00ff41;
+  cursor: pointer;
+}
+
+/* Toggle Switch Styles */
+.radar-widget-container .switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+.radar-widget-container .switch input { opacity: 0; width: 0; height: 0; }
+
+.radar-widget-container .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #0f1a0f;
+  border: 1px solid #004400;
+  border-radius: 2px;
+  transition: .3s;
+}
+
+.radar-widget-container .slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #444;
+  transition: .3s;
+  border-radius: 1px;
+}
+
+/* Checked State (Green Glow) */
+.radar-widget-container input:checked + .slider {
+  background-color: #002200;
+  border-color: #00ff41;
+  box-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+}
+
+.radar-widget-container input:checked + .slider:before {
+  transform: translateX(18px);
+  background-color: #00ff41;
+  box-shadow: 0 0 8px #00ff41;
+}
+/* --- UI TOGGLE BUTTON --- */
+.radar-widget-container .hud-toggle-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px; /* Top right corner */
+  z-index: 100;
+  background: rgba(0, 20, 0, 0.9);
+  border: 1px solid #00ff41;
+  color: #00ff41;
+  font-family: inherit;
+  font-size: 16px;
+  padding: 8px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+}
+
+.radar-widget-container .hud-toggle-btn:hover {
+  background: rgba(0, 50, 0, 1);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+  text-shadow: 0 0 5px #00ff41;
+}
+
+/* --- HIDE/SHOW ANIMATIONS FOR HUD AND CONTROLS --- */
+.hud-panel, .controls-panel {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* When hidden, they become invisible and unclickable */
+.ui-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95); /* Slight shrink effect */
+}
